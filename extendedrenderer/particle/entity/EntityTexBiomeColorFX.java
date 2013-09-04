@@ -1,15 +1,13 @@
 package extendedrenderer.particle.entity;
 
+import java.awt.Color;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.ModLoader;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-
-import java.awt.Color;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)

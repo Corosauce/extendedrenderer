@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ForgeSubscribe;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import extendedrenderer.particle.ParticleRegistry;
@@ -24,7 +25,7 @@ public class EventHandler {
         {
             lastWorldTime = mc.theWorld.getWorldInfo().getWorldTime();
 
-            if (!mc.isGamePaused)
+            if (!isPaused())
             {
                 ExtendedRenderer.rotEffRenderer.updateEffects();
             }
@@ -32,6 +33,12 @@ public class EventHandler {
 
         //Rotating particles hook
         ExtendedRenderer.rotEffRenderer.renderParticles((Entity)mc.renderViewEntity, (float)event.partialTicks);
+    }
+	
+	@SideOnly(Side.CLIENT)
+    public boolean isPaused() {
+    	if (FMLClientHandler.instance().getClient().getIntegratedServer() != null && FMLClientHandler.instance().getClient().getIntegratedServer().getServerListeningThread() != null && FMLClientHandler.instance().getClient().getIntegratedServer().getServerListeningThread().isGamePaused()) return true;
+    	return false;
     }
 	
 	@ForgeSubscribe

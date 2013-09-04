@@ -2,8 +2,6 @@ package extendedrenderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ModLoader;
-import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import extendedrenderer.render.RotatingEffectRenderer;

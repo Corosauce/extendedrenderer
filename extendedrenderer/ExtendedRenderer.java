@@ -1,32 +1,15 @@
 package extendedrenderer;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.List;
 import java.util.logging.Level;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
-
-import com.google.common.collect.Lists;
-
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -38,9 +21,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
-import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import extendedrenderer.render.RotatingEffectRenderer;
@@ -50,6 +30,7 @@ public class ExtendedRenderer {
 	
 	@Mod.Instance( value = "ExtendedRenderer" )
 	public static ExtendedRenderer instance;
+	public static String modid = "extendedrenderer";
     
     /** For use in preInit ONLY */
     public Configuration preInitConfig;
@@ -141,7 +122,7 @@ public class ExtendedRenderer {
     
     @SideOnly(Side.CLIENT)
 	public static String getClientSidePath() {
-		return FMLClientHandler.instance().getClient().getMinecraftDir().getPath();
+		return FMLClientHandler.instance().getClient().mcDataDir.getPath();
 	}
 	
 	public static void dbg(Object obj) {

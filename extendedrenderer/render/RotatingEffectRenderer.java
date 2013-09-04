@@ -1,25 +1,25 @@
 package extendedrenderer.render;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.RenderEngine;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.Entity;
-import net.minecraft.src.ModLoader;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.Entity;
+import net.minecraft.src.ModLoader;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import extendedrenderer.ExtendedRenderer;
 import extendedrenderer.particle.entity.EntityRotFX;
 @SideOnly(Side.CLIENT)
 public class RotatingEffectRenderer
@@ -27,18 +27,23 @@ public class RotatingEffectRenderer
     public int layers = 6;
     public World worldObj;
     public List[] fxLayers = new List[layers];
-    public RenderEngine renderer;
+    //public RenderEngine renderer;
+    public TextureManager renderer;
     public Random rand = new Random();
     public float hmm = 0F;
+    
+    public static final ResourceLocation particleTextures = new ResourceLocation("textures/particle/particles.png");
+    public static final ResourceLocation resLayer4 = new ResourceLocation(ExtendedRenderer.modid + ":textures/particles/particles_64.png");
+    public static final ResourceLocation resLayer5 = new ResourceLocation(ExtendedRenderer.modid + ":textures/particles/particles_16.png");;
 
-    public RotatingEffectRenderer(World var1, RenderEngine var2)
+    public RotatingEffectRenderer(World var1, TextureManager par2TextureManager)
     {
         if (var1 != null)
         {
             this.worldObj = var1;
         }
 
-        this.renderer = var2;
+        this.renderer = par2TextureManager;
 
         for (int var3 = 0; var3 < layers; ++var3)
         {
@@ -116,34 +121,39 @@ public class RotatingEffectRenderer
 
                 if (this.fxLayers[var8].size() != 0)
                 {
-                    int var9 = 0;
+                    //int var9 = 0;
 
                     if (var8 == 0)
                     {
-                        var9 = this.renderer.getTexture("/particles.png");
+                        //var9 = this.renderer.getTexture("/particles.png");
+                        this.renderer.func_110577_a(particleTextures);
                     }
 
                     if (var8 == 1)
                     {
-                        var9 = this.renderer.getTexture("/terrain.png");
+                        //var9 = this.renderer.getTexture("/terrain.png");
+                        this.renderer.func_110577_a(TextureMap.field_110575_b);
                     }
 
                     if (var8 == 2)
                     {
-                        var9 = this.renderer.getTexture("/gui/items.png");
+                        //var9 = this.renderer.getTexture("/gui/items.png");
+                        this.renderer.func_110577_a(TextureMap.field_110576_c);
                     }
 
                     if (var8 == 4)
                     {
-                        var9 = this.renderer.getTexture("/coro/weather/particles_64.png");
+                        //var9 = this.renderer.getTexture("/coro/weather/particles_64.png");
+                        this.renderer.func_110577_a(resLayer4);
                     }
                     
                     if (var8 == 5)
                     {
-                        var9 = this.renderer.getTexture("/coro/weather/particles_16.png");
+                        //var9 = this.renderer.getTexture("/coro/weather/particles_16.png");
+                        this.renderer.func_110577_a(resLayer5);
                     }
 
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, var9);
+                    //GL11.glBindTexture(GL11.GL_TEXTURE_2D, var9);
                     Tessellator var10 = Tessellator.instance;
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                     GL11.glDepthMask(false);

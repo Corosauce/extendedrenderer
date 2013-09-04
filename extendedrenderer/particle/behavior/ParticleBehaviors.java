@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.Icon;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -134,7 +133,7 @@ public class ParticleBehaviors {
 	}
 	
 	public EntityRotFX spawnNewParticle(World world, Icon icon, double x, double y, double z, double vecX, double vecY, double vecZ) {
-		EntityRotFX entityfx = new EntityIconWindFX(world, x, y, z, vecX, vecY, vecZ, icon, Minecraft.getMinecraft().renderEngine);
+		EntityRotFX entityfx = new EntityIconWindFX(world, x, y, z, vecX, vecY, vecZ, icon);
 		entityfx.pb = this;
 		return entityfx;
 	}

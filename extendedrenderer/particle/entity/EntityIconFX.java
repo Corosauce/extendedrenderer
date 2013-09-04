@@ -1,7 +1,6 @@
 package extendedrenderer.particle.entity;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -11,10 +10,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class EntityIconFX extends EntityRotFX
 {
-    public EntityIconFX(World par1World, double par2, double par4, double par6, Icon par8Item, RenderEngine par9RenderEngine)
+    public EntityIconFX(World par1World, double par2, double par4, double par6, Icon par8Item)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-        this.setParticleIcon(par9RenderEngine, par8Item);
+        this.func_110125_a(par8Item);
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
         this.particleGravity = Block.blockSnow.blockParticleGravity;
         //this.particleScale /= 2.0F;
@@ -22,9 +21,9 @@ public class EntityIconFX extends EntityRotFX
         particleTextureJitterY = 3;
     }
 
-    public EntityIconFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Icon par14Item, RenderEngine par15RenderEngine)
+    public EntityIconFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, Icon par14Item)
     {
-        this(par1World, par2, par4, par6, par14Item, par15RenderEngine);
+        this(par1World, par2, par4, par6, par14Item);
         this.motionX *= 0.10000000149011612D;
         this.motionY *= 0.10000000149011612D;
         this.motionZ *= 0.10000000149011612D;

@@ -2,6 +2,7 @@ package extendedrenderer.render;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 
 public class RenderNull extends Render
 {
@@ -10,4 +11,10 @@ public class RenderNull extends Render
     	var1.lastTickPosY = var1.posY;
     	var1.lastTickPosZ = var1.posZ;
     }
+
+	@Override
+	protected ResourceLocation func_110775_a(Entity entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
