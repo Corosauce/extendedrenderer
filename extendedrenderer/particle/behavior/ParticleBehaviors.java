@@ -9,6 +9,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import extendedrenderer.particle.entity.EntityIconFX;
 import extendedrenderer.particle.entity.EntityIconWindFX;
 import extendedrenderer.particle.entity.EntityRotFX;
 
@@ -132,8 +133,31 @@ public class ParticleBehaviors {
 		
 	}
 	
-	public EntityRotFX spawnNewParticle(World world, Icon icon, double x, double y, double z, double vecX, double vecY, double vecZ) {
+	public void tickUpdateCloud(EntityRotFX particle) {
+		particle.rotationYaw -= 0.1;
+		
+		int ticksFadeInMax = 100;
+		
+		if (particle.getAge() < ticksFadeInMax) {
+			//System.out.println("particle.getAge(): " + particle.getAge());
+			particle.setAlphaF(particle.getAge() * 0.01F);
+		} else {
+			if (particle.getAlphaF() > 0) {
+				particle.setAlphaF(particle.getAlphaF() - rateAlpha*1.3F);
+			} else {
+				particle.setDead();
+			}
+		}
+	}
+	
+	public EntityRotFX spawnNewParticleWindFX(World world, Icon icon, double x, double y, double z, double vecX, double vecY, double vecZ) {
 		EntityRotFX entityfx = new EntityIconWindFX(world, x, y, z, vecX, vecY, vecZ, icon);
+		entityfx.pb = this;
+		return entityfx;
+	}
+	
+	public EntityRotFX spawnNewParticleIconFX(World world, Icon icon, double x, double y, double z, double vecX, double vecY, double vecZ) {
+		EntityRotFX entityfx = new EntityIconFX(world, x, y, z, vecX, vecY, vecZ, icon);
 		entityfx.pb = this;
 		return entityfx;
 	}
@@ -150,6 +174,24 @@ public class ParticleBehaviors {
 		particle.brightness = 1F;
 		particle.setSize(0.1F, 0.1F);
 		particle.setAlphaF(0.6F);
+		return particle;
+	}
+	
+	public EntityRotFX setParticleCloud(EntityRotFX particle, float freezeY) {
+		particle.spawnY = freezeY;
+		particle.rotationPitch = 90F;
+		particle.renderDistanceWeight = 999D;
+        particle.noClip = true;
+        particle.setSize(0.25F, 0.25F);
+        particle.particleScale = 500F;
+        //particle.particleScale = 200F;
+        particle.callUpdateSuper = false;
+        particle.callUpdatePB = false;
+        particle.setMaxAge(500);
+        particle.setRBGColorF(1F, 1F, 1F);
+        particle.brightness = 0.3F;//- ((200F - particle.spawnY) * 0.05F);
+        particle.renderRange = 999F;
+        particle.setAlphaF(0F);
 		return particle;
 	}
 	

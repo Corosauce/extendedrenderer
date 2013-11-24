@@ -13,7 +13,7 @@ public class EntityIconFX extends EntityRotFX
     public EntityIconFX(World par1World, double par2, double par4, double par6, Icon par8Item)
     {
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-        this.func_110125_a(par8Item);
+        this.setParticleIcon(par8Item);
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
         this.particleGravity = Block.blockSnow.blockParticleGravity;
         //this.particleScale /= 2.0F;

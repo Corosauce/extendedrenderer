@@ -133,9 +133,9 @@ public class EntityTexBiomeColorFX extends EntityRotFX
         //var14 += j;
         //var15 += k;
         //System.out.println("!!!");
-        float var16 = /*this.getEntityBrightness(var2) * */brightness;
+        /*float var16 = this.getEntityBrightness(var2) * brightness;
         
-        /*this.getBrightness(var2) * */
+        this.getBrightness(var2) * 
         
         float adjSubtracted = (this.worldObj.calculateSkylightSubtracted(var2) / 15F) * 0.5F;
         
@@ -143,11 +143,16 @@ public class EntityTexBiomeColorFX extends EntityRotFX
         
         var16 = (-0.5F + ModLoader.getMinecraftInstance().gameSettings.gammaSetting) - (this.worldObj.calculateSkylightSubtracted(var2) * 0.17F);
         
-        var16 = 0.4F - adjSubtracted + (ModLoader.getMinecraftInstance().gameSettings.gammaSetting * 0.7F);
+        var16 = 0.4F - adjSubtracted + (ModLoader.getMinecraftInstance().gameSettings.gammaSetting * 0.7F);*/
+        
+        Minecraft mc = Minecraft.getMinecraft();
+        float br = ((0.9F + (mc.gameSettings.gammaSetting * 0.1F)) - (mc.theWorld.calculateSkylightSubtracted(var2) * 0.03F)) * mc.theWorld.getSunBrightness(1F);
+        br = 0.55F * Math.max(0.3F, br) * (2F);
+        
         EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
         //System.out.println("brightness: " + adjSubtracted);
         //System.out.println(this.worldObj.calculateSkylightSubtracted(var2) * 0.12F);
-        var1.setColorOpaque_F(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16);
+        var1.setColorOpaque_F(this.particleRed * br, this.particleGreen * br, this.particleBlue * br);
         var1.addVertexWithUV((double)(var13 - var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 - var5 * var12 - var7 * var12), (double)var9, (double)var11);
         var1.addVertexWithUV((double)(var13 - var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 - var5 * var12 + var7 * var12), (double)var9, (double)var10);
         var1.addVertexWithUV((double)(var13 + var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 + var5 * var12 + var7 * var12), (double)var8, (double)var10);

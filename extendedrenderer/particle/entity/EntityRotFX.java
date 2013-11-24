@@ -12,7 +12,7 @@ public class EntityRotFX extends EntityFX
 {
     public boolean weatherEffect = false;
 
-    public float spawnY = 130F;
+    public float spawnY = -1;
     
     //this field and 2 methods below are for backwards compatibility with old particle system from the new icon based system
     public int particleTextureIndexInt = 0;
@@ -20,6 +20,11 @@ public class EntityRotFX extends EntityFX
     public float brightness = 0.7F;
     
     public ParticleBehaviors pb = null;
+    
+    public boolean callUpdateSuper = true;
+    public boolean callUpdatePB = true;
+    
+    public float renderRange = 128F;
     
     public int getParticleTextureIndex()
     {
@@ -37,12 +42,30 @@ public class EntityRotFX extends EntityFX
     
     @Override
     public void onUpdate() {
-    	super.onUpdate();
+    	if (callUpdateSuper) super.onUpdate();
     	this.lastTickPosX = this.posX;
         this.lastTickPosY = this.posY;
         this.lastTickPosZ = this.posZ;
         
-        if (pb != null) pb.tickUpdate(this);
+        if (callUpdatePB && pb != null) pb.tickUpdate(this);
+        
+        //calling required stuff the super did
+        if (!callUpdateSuper) {
+        	this.prevPosX = this.posX;
+            this.prevPosY = this.posY;
+            this.prevPosZ = this.posZ;
+
+            if (this.particleAge++ >= this.particleMaxAge)
+            {
+                this.setDead();
+            }
+            
+            if (spawnY != -1) {
+            	setPosition(posX, spawnY, posZ);
+            }
+            
+            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        }
     }
     
     public void setParticleTextureIndex(int par1)
@@ -109,6 +132,6 @@ public class EntityRotFX extends EntityFX
     }
     
     public float maxRenderRange() {
-    	return 128F;
+    	return renderRange;
     }
 }

@@ -126,37 +126,37 @@ public class RotatingEffectRenderer
                     if (var8 == 0)
                     {
                         //var9 = this.renderer.getTexture("/particles.png");
-                        this.renderer.func_110577_a(particleTextures);
+                        this.renderer.bindTexture(particleTextures);
                     }
 
                     if (var8 == 1)
                     {
                         //var9 = this.renderer.getTexture("/terrain.png");
-                        this.renderer.func_110577_a(TextureMap.field_110575_b);
+                        this.renderer.bindTexture(TextureMap.locationBlocksTexture);
                     }
 
                     if (var8 == 2)
                     {
                         //var9 = this.renderer.getTexture("/gui/items.png");
-                        this.renderer.func_110577_a(TextureMap.field_110576_c);
+                        this.renderer.bindTexture(TextureMap.locationItemsTexture);
                     }
 
                     if (var8 == 4)
                     {
                         //var9 = this.renderer.getTexture("/coro/weather/particles_64.png");
-                        this.renderer.func_110577_a(resLayer4);
+                        this.renderer.bindTexture(resLayer4);
                     }
                     
                     if (var8 == 5)
                     {
                         //var9 = this.renderer.getTexture("/coro/weather/particles_16.png");
-                        this.renderer.func_110577_a(resLayer5);
+                        this.renderer.bindTexture(resLayer5);
                     }
 
                     //GL11.glBindTexture(GL11.GL_TEXTURE_2D, var9);
                     Tessellator var10 = Tessellator.instance;
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    GL11.glDepthMask(false);
+                    GL11.glDepthMask(true);
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
@@ -186,7 +186,8 @@ public class RotatingEffectRenderer
                         //ExtendedRenderer.plBrightness = ModLoader.getMinecraftInstance().thePlayer.getBrightnessForRender(var2);
                     }
 
-                    for (int var11 = 0; var11 < this.fxLayers[var8].size(); ++var11)
+                    //for (int var11 = 0; var11 < this.fxLayers[var8].size(); ++var11)
+                    for (int var11 = this.fxLayers[var8].size()-1; var11 >= 0; --var11)
                     {
                         EntityFX var12 = (EntityFX)this.fxLayers[var8].get(var11);
 
@@ -277,7 +278,7 @@ public class RotatingEffectRenderer
                         double var13 = (double)var2 + ((double)var9 + 0.5D) / (double)var7;
                         double var15 = (double)var3 + ((double)var10 + 0.5D) / (double)var7;
                         int var17 = this.rand.nextInt(6);
-                        //this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)var1 - 0.5D, var13 - (double)var2 - 0.5D, var15 - (double)var3 - 0.5D, var6, var17, var5)).func_70596_a(var1, var2, var3));
+                        //this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)var1 - 0.5D, var13 - (double)var2 - 0.5D, var15 - (double)var3 - 0.5D, var6, var17, var5)).applyColourMultiplier(var1, var2, var3));
                     }
                 }
             }
