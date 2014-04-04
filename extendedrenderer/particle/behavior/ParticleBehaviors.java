@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -18,6 +19,7 @@ public class ParticleBehaviors {
 
 	public List<EntityRotFX> particles = new ArrayList<EntityRotFX>();
 	public Vec3 coordSource;
+	public Entity sourceEntity = null;
 	public Random rand = new Random();
 	
 	//Visual tweaks
@@ -32,7 +34,7 @@ public class ParticleBehaviors {
 		coordSource = source;
 	}
 	
-	public void tickUpdateList() {
+	public void tickUpdateList() { //shouldnt be used, particles tick their own method, who removes it though?
 		for (int i = 0; i < particles.size(); i++) {
 			EntityRotFX particle = particles.get(i);
 			
@@ -45,10 +47,16 @@ public class ParticleBehaviors {
 	}
 	
 	public void tickUpdate(EntityRotFX particle) {
-		tickUpdateSmoke(particle);
+		
+		if (sourceEntity != null) {
+			coordSource = Vec3.createVectorHelper(sourceEntity.posX, sourceEntity.posY, sourceEntity.posZ);
+		}
+		
+		tickUpdateAct(particle);
 	}
 	
-	public void tickUpdateSmoke(EntityRotFX particle) {
+	//default is smoke effect, override for custom
+	public void tickUpdateAct(EntityRotFX particle) {
 		
 			
 		double centerX = particle.posX;
@@ -56,9 +64,9 @@ public class ParticleBehaviors {
 		double centerZ = particle.posZ;
 		
 		if (coordSource != null) {
-			centerX = coordSource.xCoord + 0.5D;
-			centerY = coordSource.yCoord + 0.5D;
-			centerZ = coordSource.zCoord + 0.5D;
+			centerX = coordSource.xCoord/* + 0.5D*/;
+			centerY = coordSource.yCoord/* + 0.5D*/;
+			centerZ = coordSource.zCoord/* + 0.5D*/;
 		}
 		
 		double vecX = centerX - particle.posX;
@@ -160,6 +168,21 @@ public class ParticleBehaviors {
 		EntityRotFX entityfx = new EntityIconFX(world, x, y, z, vecX, vecY, vecZ, icon);
 		entityfx.pb = this;
 		return entityfx;
+	}
+	
+	public EntityRotFX initParticle(EntityRotFX particle) {
+		
+		particle.prevPosX = particle.posX;
+		particle.prevPosY = particle.posY;
+		particle.prevPosZ = particle.posZ;
+		particle.lastTickPosX = particle.posX;
+		particle.lastTickPosY = particle.posY;
+		particle.lastTickPosZ = particle.posZ;
+		
+		//keep AABB small, very important to performance
+		particle.setSize(0.01F, 0.01F);
+		
+		return particle;
 	}
 	
 	public EntityRotFX setParticleRandoms(EntityRotFX particle, boolean yaw, boolean pitch) {

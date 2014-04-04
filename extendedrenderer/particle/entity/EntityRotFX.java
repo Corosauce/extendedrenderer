@@ -19,7 +19,7 @@ public class EntityRotFX extends EntityFX
     
     public float brightness = 0.7F;
     
-    public ParticleBehaviors pb = null;
+    public ParticleBehaviors pb = null; //designed to be a reference to the central objects particle behavior
     
     public boolean callUpdateSuper = true;
     public boolean callUpdatePB = true;
@@ -38,6 +38,12 @@ public class EntityRotFX extends EntityFX
     public float getAlphaF()
     {
         return this.particleAlpha;
+    }
+    
+    @Override
+    public void setDead() {
+    	if (pb != null) pb.particles.remove(this);
+    	super.setDead();
     }
     
     @Override

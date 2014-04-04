@@ -156,10 +156,49 @@ public class RotatingEffectRenderer
                     //GL11.glBindTexture(GL11.GL_TEXTURE_2D, var9);
                     Tessellator var10 = Tessellator.instance;
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    GL11.glDepthMask(true);
+                    
+                    //tutorials say should be false for best transparency without ordering rule
+                    //also, transparency layering issue exists for tornadoes with this as false because:
+                    //FALSE: different layers are used for tornado animated funnel particles vs cloud texture -
+                    //whats real issue with old system?
+                    //same clouds showing strongly through tornado issue happens with icon/hd ones!!!!!!!!!!!!
+                    //GL11.glDisable(GL11.GL_DEPTH_TEST); != GL11.glDepthMask(false); 
+                    
+                    //there really is no easy solution, but theres a possible shortcut to full sort rendering
+                    //- render all cloud based particles first (they are likely to be furthest away)
+                    //- render the rest... (tornado funnel)
+                    
+                    //maybe add a system to add an order index of render for each particle
+                    
+                    //also note, non hd funnel particles worked better because they are opaque, no partial transparency, just 0 or 100
+                    //this made the depth buffer function properly
+                    //https://stackoverflow.com/questions/3388294/opengl-question-about-the-usage-of-gldepthmask
+                    
+                    GL11.glDepthMask(false);
+                    //GL11.glDisable(GL11.GL_DEPTH_TEST);						// Disables Depth Testing
+                    //GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+                    
+                    //old way
+                    //GL11.glClearDepth(1.0f);							// Depth Buffer Setup
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);					// Type Of Blending To Perform
+                    //GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);			// Really Nice Perspective Calculations
+                    //GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST);
                     GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+                    
+                    //nehe way for particles
+                    if (false) {
+	                    GL11.glShadeModel(GL11.GL_SMOOTH);						// Enables Smooth Shading
+	                    GL11.glClearColor(0.0f,0.0f,0.0f,0.0f);					// Black Background
+	                    GL11.glClearDepth(1.0f);							// Depth Buffer Setup
+	                    GL11.glDisable(GL11.GL_DEPTH_TEST);						// Disables Depth Testing
+	                    GL11.glEnable(GL11.GL_BLEND);							// Enable Blending
+	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);					// Type Of Blending To Perform
+	                    GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);			// Really Nice Perspective Calculations
+	                    GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST);
+                    }
+                    
                     GL11.glDisable(GL11.GL_CULL_FACE);
                     //GL11.glRotatef(180.0F - RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
                     //GL11.glRotatef(-RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
