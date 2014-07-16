@@ -1,10 +1,6 @@
 package extendedrenderer.particle.behavior;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.Vec3;
-import extendedrenderer.ExtendedRenderer;
-import extendedrenderer.particle.ParticleRegistry;
-import extendedrenderer.particle.entity.EntityIconFX;
 import extendedrenderer.particle.entity.EntityRotFX;
 
 public class ParticleBehaviorFog extends ParticleBehaviors {
@@ -31,9 +27,10 @@ public class ParticleBehaviorFog extends ParticleBehaviors {
 		
 		particle.setMaxAge(650+rand.nextInt(10));
 		particle.setGravity(0.01F);
-		float randFloat = 0.2F;//(rand.nextFloat() * 0.6F);
-		float baseBright = 0.2F;
-		particle.setRBGColorF(baseBright+randFloat, baseBright+randFloat, baseBright+randFloat);
+		float randFloat = (rand.nextFloat() * 0.6F);
+		float baseBright = 0.7F;
+		float finalBright = Math.min(1F, baseBright+randFloat);
+		particle.setRBGColorF(finalBright, finalBright, finalBright);
 		//particle.setRBGColorF(72F/255F, 239F/255F, 8F/255F);
 		
 		//sand
@@ -48,13 +45,13 @@ public class ParticleBehaviorFog extends ParticleBehaviors {
 		
 		//location based color shift
 		//particle.setRBGColorF((float) (0.4F + (Math.abs(particle.posX / 300D) * 0.6D)), 0.4F, (float) (0.4F + (Math.abs(particle.posZ / 300D) * 0.6D)));
-		particle.particleScale = 0.25F + 0.2F * rand.nextFloat();
+		particle.setScale(0.25F + 0.2F * rand.nextFloat());
 		particle.brightness = 1F;
 		particle.setAlphaF(0);
 		
 		float sizeBase = (float) (500+(rand.nextDouble()*40));
 		
-		particle.particleScale = sizeBase;
+		particle.setScale(sizeBase);
 		//particle.spawnY = (float) particle.posY;
 		particle.noClip = false;
 		//entityfx.spawnAsWeatherEffect();
@@ -74,7 +71,7 @@ public class ParticleBehaviorFog extends ParticleBehaviors {
 			if (particle.isDead) {
 				particles.remove(particle);
 			} else {
-				if (particle.entityId % 2 == 0) {
+				if (particle.getEntityId() % 2 == 0) {
 					particle.rotationYaw -= 0.1;
 				} else {
 					particle.rotationYaw += 0.1;
@@ -109,15 +106,15 @@ public class ParticleBehaviorFog extends ParticleBehaviors {
 					particle.rotationYaw += 0.1;
 				}
 				
-				particle.motionX -= Math.sin(Math.toRadians((particle.rotationYaw + particle.entityId) % 360)) * moveSpeed;
-				particle.motionZ += Math.cos(Math.toRadians((particle.rotationYaw + particle.entityId) % 360)) * moveSpeed;
+				particle.motionX -= Math.sin(Math.toRadians((particle.rotationYaw + particle.getEntityId()) % 360)) * moveSpeed;
+				particle.motionZ += Math.cos(Math.toRadians((particle.rotationYaw + particle.getEntityId()) % 360)) * moveSpeed;
 				
 				double moveSpeedRand = 0.005D;
 				
 				particle.motionX += rand.nextDouble() * moveSpeedRand - rand.nextDouble() * moveSpeedRand;
 				particle.motionZ += rand.nextDouble() * moveSpeedRand - rand.nextDouble() * moveSpeedRand;
 				
-				particle.particleScale -= 0.1F;
+				particle.setScale(particle.getScale() - 0.1F);
 				
 				if (particle.spawnY != -1) {
 					particle.setPosition(particle.posX, particle.spawnY, particle.posZ);

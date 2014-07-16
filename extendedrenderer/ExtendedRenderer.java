@@ -1,26 +1,19 @@
 package extendedrenderer;
 
 import java.io.File;
-import java.util.logging.Level;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import extendedrenderer.render.RotatingEffectRenderer;
@@ -32,60 +25,31 @@ public class ExtendedRenderer {
 	public static ExtendedRenderer instance;
 	public static String modid = "extendedrenderer";
     
-    /** For use in preInit ONLY */
-    public Configuration preInitConfig;
-    
     @SidedProxy(clientSide = "extendedrenderer.ClientProxy", serverSide = "extendedrenderer.CommonProxy")
     public static CommonProxy proxy;
 
     @SideOnly(Side.CLIENT)
     public static RotatingEffectRenderer rotEffRenderer;
     
-    @PreInit
+    @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-    	preInitConfig = new Configuration(event.getSuggestedConfigurationFile());
-        try
-        {
-            preInitConfig.load();
-            
-            
-        }
-        catch (Exception e)
-        {
-            FMLLog.log(Level.SEVERE, e, "Hostile Worlds has a problem loading it's configuration");
-        }
-        finally
-        {
-            preInitConfig.save();
-        }
+    	
     }
     
-    @Init
+    @EventHandler
     public void load(FMLInitializationEvent event)
     {
-    	proxy.init(this);
-    	MinecraftForge.EVENT_BUS.register(new EventHandler());
+    	proxy.init();
+    	MinecraftForge.EVENT_BUS.register(new extendedrenderer.EventHandler());
     }
     
-    @PostInit
+    @EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-    	proxy.postInit(this);
+    	proxy.postInit();
 	}
 
     public ExtendedRenderer() {
-    	
-    }
-    
-    @Mod.ServerStarted
-    public void serverStart(FMLServerStartedEvent event) {
-    	
-    	//proper command adding
-    	//((ServerCommandManager) MinecraftServer.getServer().getCommandManager()).registerCommand(new commandAddOwner());
-    }
-    
-    @Mod.ServerStopped
-    public void serverStop(FMLServerStoppedEvent event) {
     	
     }
     

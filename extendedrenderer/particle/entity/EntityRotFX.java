@@ -26,6 +26,9 @@ public class EntityRotFX extends EntityFX
     
     public float renderRange = 128F;
     
+    //used in RotatingEffectRenderer to assist in solving some transparency ordering issues, eg, tornado funnel before clouds
+    public int renderOrder = -1;
+    
     public int getParticleTextureIndex()
     {
         return this.particleTextureIndexInt;
@@ -139,5 +142,13 @@ public class EntityRotFX extends EntityFX
     
     public float maxRenderRange() {
     	return renderRange;
+    }
+    
+    public void setScale(float parScale) {
+    	particleScale = parScale;
+    }
+    
+    public float getScale() {
+    	return particleScale;
     }
 }

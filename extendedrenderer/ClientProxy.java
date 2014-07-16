@@ -1,9 +1,14 @@
 package extendedrenderer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.ModLoader;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import extendedrenderer.particle.entity.EntityRotFX;
+import extendedrenderer.particle.entity.EntityTexBiomeColorFX;
+import extendedrenderer.particle.entity.EntityTexFX;
+import extendedrenderer.render.RenderNull;
 import extendedrenderer.render.RotatingEffectRenderer;
 
 @SideOnly(Side.CLIENT)
@@ -13,26 +18,34 @@ public class ClientProxy extends CommonProxy
 
     public ClientProxy()
     {
-        mc = ModLoader.getMinecraftInstance();
+        mc = FMLClientHandler.instance().getClient();
     }
     
     @Override
-    public void preInit(ExtendedRenderer pMod)
+    public void preInit()
     {
-    	super.preInit(pMod);
+    	super.preInit();
     }
     
     @Override
-    public void postInit(ExtendedRenderer pMod)
+    public void postInit()
     {
-    	super.postInit(pMod);
+    	super.postInit();
     	ExtendedRenderer.rotEffRenderer = new RotatingEffectRenderer(mc.theWorld, mc.renderEngine);
     }
 
     @Override
-    public void init(ExtendedRenderer pMod)
+    public void init()
     {
-        super.init(pMod);
+        super.init();
+        
+        //rr.registerEntityRenderingHandler(StormCluster.class, new RenderNull());
+        RenderingRegistry.registerEntityRenderingHandler(EntityTexFX.class, new RenderNull());
+        RenderingRegistry.registerEntityRenderingHandler(EntityTexBiomeColorFX.class, new RenderNull());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRotFX.class, new RenderNull());
+        //rr.registerEntityRenderingHandler(EntityFallingRainFX.class, new RenderNull());
+        //rr.registerEntityRenderingHandler(EntityWaterfallFX.class, new RenderNull());
+        //rr.registerEntityRenderingHandler(EntitySnowFX.class, new RenderNull());
     }
     
 }

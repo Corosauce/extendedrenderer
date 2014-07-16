@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -60,12 +60,12 @@ public class ParticleBehaviors {
 		
 			
 		double centerX = particle.posX;
-		double centerY = particle.posY;
+		//double centerY = particle.posY;
 		double centerZ = particle.posZ;
 		
 		if (coordSource != null) {
 			centerX = coordSource.xCoord/* + 0.5D*/;
-			centerY = coordSource.yCoord/* + 0.5D*/;
+			//centerY = coordSource.yCoord/* + 0.5D*/;
 			centerZ = coordSource.zCoord/* + 0.5D*/;
 		}
 		
@@ -100,7 +100,6 @@ public class ParticleBehaviors {
 			particle.motionZ += (rand.nextDouble() - rand.nextDouble()) * speed2;
 			
 		}
-		int cycle = 40;
 		
 		float brightnessShiftRate = rateDarken;
 		
@@ -130,7 +129,7 @@ public class ParticleBehaviors {
 			}
 		}
 		
-		if (particle.particleScale < 8F) particle.particleScale += rateScale;
+		if (particle.getScale() < 8F) particle.setScale(particle.getScale() + rateScale);
 		
 		/*if (particle.getAge() % cycle < cycle/2) {
 			particle.setGravity(-0.02F);
@@ -158,15 +157,20 @@ public class ParticleBehaviors {
 		}
 	}
 	
-	public EntityRotFX spawnNewParticleWindFX(World world, Icon icon, double x, double y, double z, double vecX, double vecY, double vecZ) {
+	public EntityRotFX spawnNewParticleWindFX(World world, IIcon icon, double x, double y, double z, double vecX, double vecY, double vecZ) {
 		EntityRotFX entityfx = new EntityIconWindFX(world, x, y, z, vecX, vecY, vecZ, icon);
 		entityfx.pb = this;
 		return entityfx;
 	}
 	
-	public EntityRotFX spawnNewParticleIconFX(World world, Icon icon, double x, double y, double z, double vecX, double vecY, double vecZ) {
+	public EntityRotFX spawnNewParticleIconFX(World world, IIcon icon, double x, double y, double z, double vecX, double vecY, double vecZ) {
+		return spawnNewParticleIconFX(world, icon, x, y, z, vecX, vecY, vecZ, -1);
+	}
+	
+	public EntityRotFX spawnNewParticleIconFX(World world, IIcon icon, double x, double y, double z, double vecX, double vecY, double vecZ, int renderOrder) {
 		EntityRotFX entityfx = new EntityIconFX(world, x, y, z, vecX, vecY, vecZ, icon);
 		entityfx.pb = this;
+		entityfx.renderOrder = renderOrder;
 		return entityfx;
 	}
 	
@@ -185,28 +189,30 @@ public class ParticleBehaviors {
 		return particle;
 	}
 	
-	public EntityRotFX setParticleRandoms(EntityRotFX particle, boolean yaw, boolean pitch) {
+	public static EntityRotFX setParticleRandoms(EntityRotFX particle, boolean yaw, boolean pitch) {
+		Random rand = new Random();
 		if (yaw) particle.rotationYaw = rand.nextInt(360);
 		if (pitch) particle.rotationPitch = rand.nextInt(360);
 		return particle;
 	}
 	
-	public EntityRotFX setParticleFire(EntityRotFX particle) {
+	public static EntityRotFX setParticleFire(EntityRotFX particle) {
+		Random rand = new Random();
 		particle.setRBGColorF(0.6F + (rand.nextFloat() * 0.4F), 0.2F + (rand.nextFloat() * 0.2F), 0);
-		particle.particleScale = 0.25F + 0.2F * rand.nextFloat();
+		particle.setScale(0.25F + 0.2F * rand.nextFloat());
 		particle.brightness = 1F;
 		particle.setSize(0.1F, 0.1F);
 		particle.setAlphaF(0.6F);
 		return particle;
 	}
 	
-	public EntityRotFX setParticleCloud(EntityRotFX particle, float freezeY) {
+	public static EntityRotFX setParticleCloud(EntityRotFX particle, float freezeY) {
 		particle.spawnY = freezeY;
 		particle.rotationPitch = 90F;
 		particle.renderDistanceWeight = 999D;
         particle.noClip = true;
         particle.setSize(0.25F, 0.25F);
-        particle.particleScale = 500F;
+        particle.setScale(500F);
         //particle.particleScale = 200F;
         particle.callUpdateSuper = false;
         particle.callUpdatePB = false;

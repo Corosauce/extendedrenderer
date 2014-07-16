@@ -2,11 +2,9 @@ package extendedrenderer.particle.entity;
 
 import java.awt.Color;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.src.ModLoader;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,7 +20,7 @@ public class EntityTexBiomeColorFX extends EntityRotFX
     //Sand = 1
     public int type = 0;
 
-    public EntityTexBiomeColorFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12, double var14, int colorIndex, int texID, int id, int meta, int x, int y, int z)
+    public EntityTexBiomeColorFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12, double var14, int colorIndex, int texID, int meta, int x, int y, int z)
     {
         super(var1, var2, var4, var6, var8, var10, var12);
         textureID = texID;
@@ -69,7 +67,7 @@ public class EntityTexBiomeColorFX extends EntityRotFX
         
         //biome color override
         //int meta = this.worldObj.getBlockMetadata((x, y, z)
-        color = new Color(Block.leaves.colorMultiplier(worldObj, x, y, z));
+        color = new Color(Blocks.leaves.colorMultiplier(worldObj, x, y, z));
 
         //BRIGHTNESS OVERRIDE! for textures
         this.particleRed = this.particleGreen = this.particleBlue = 0.7F;
@@ -149,9 +147,6 @@ public class EntityTexBiomeColorFX extends EntityRotFX
         float br = ((0.9F + (mc.gameSettings.gammaSetting * 0.1F)) - (mc.theWorld.calculateSkylightSubtracted(var2) * 0.03F)) * mc.theWorld.getSunBrightness(1F);
         br = 0.55F * Math.max(0.3F, br) * (2F);
         
-        EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
-        //System.out.println("brightness: " + adjSubtracted);
-        //System.out.println(this.worldObj.calculateSkylightSubtracted(var2) * 0.12F);
         var1.setColorOpaque_F(this.particleRed * br, this.particleGreen * br, this.particleBlue * br);
         var1.addVertexWithUV((double)(var13 - var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 - var5 * var12 - var7 * var12), (double)var9, (double)var11);
         var1.addVertexWithUV((double)(var13 - var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 - var5 * var12 + var7 * var12), (double)var9, (double)var10);

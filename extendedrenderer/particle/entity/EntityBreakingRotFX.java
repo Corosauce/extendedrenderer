@@ -1,6 +1,5 @@
 package extendedrenderer.particle.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
@@ -15,7 +14,7 @@ public class EntityBreakingRotFX extends EntityRotFX
         super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
         this.setParticleIcon(par8Item.getIconFromDamage(0));
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-        this.particleGravity = Block.blockSnow.blockParticleGravity;
+        this.particleGravity = 0.2F;//Block.blockSnow.blockParticleGravity;
         this.particleScale /= 2.0F;
         //particleTextureJitterX = 3;
         //particleTextureJitterY = 3;
